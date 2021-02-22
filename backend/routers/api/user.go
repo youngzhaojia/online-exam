@@ -49,6 +49,30 @@ func Login(c *gin.Context) {
 }
 
 // 用户注册
-func register(c *gin.Context) {
+func Register(c *gin.Context) {
+	appG := app.Gin{C: c}
 
+	mobile := c.PostForm("mobile")
+	password := c.PostForm("password")
+	name := c.PostForm("name")
+
+	if mobile == "" || password == "" {
+		logging.Info("参数错误")
+		appG.ResponseErr(e.ERROR, "参数错误")
+		return
+	}
+
+	isMobileExist, _ := models.IsMobileExist(mobile)
+	if isMobileExist {
+		logging.Info("手机号已存在:" + mobile)
+		appG.ResponseErr(e.ERROR, "手机号已存在")
+		return
+	}
+
+	err := models.AddUser(mobile, password, name)
+	if err != nil {
+		appG.ResponseErrMsg("注册失败:" + fmt.Sprintf("%s", err))
+		return
+	}
+	appG.ResponseSuccess("ok", nil)
 }

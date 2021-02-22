@@ -17,6 +17,7 @@ func InitRouter() *gin.Engine {
 	apiGroup := r.Group("/api")
 	// 用户登录
 	apiGroup.POST("/user/login", api.Login)
+	apiGroup.POST("/user/register", api.Register)
 	// jwt验证
 	apiGroup.Use(jwt.JWT())
 	// 分组
