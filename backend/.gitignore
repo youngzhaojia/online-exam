@@ -1,0 +1,6 @@
+.idea/
+.DS_Store
+
+conf/app.ini
+runtime/*
+go-online-exam-api
