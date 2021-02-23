@@ -10,7 +10,7 @@ import (
 	"github.com/unknwon/com"
 )
 
-func GetQuestionList(c *gin.Context) {
+func GetExamList(c *gin.Context) {
 	appG := app.Gin{C: c}
 	params := make(map[string]interface{})
 	data := make(map[string]interface{})
@@ -21,40 +21,38 @@ func GetQuestionList(c *gin.Context) {
 	params["user_id"] = userId
 
 	// 分组列表数据
-	questionList, err := models.GetQuestionList(pageNum, setting.AppSetting.PageSize, params)
+	examList, err := models.GetExamList(pageNum, setting.AppSetting.PageSize, params)
 	if err != nil {
 		appG.ResponseErrMsg("数据查询出错")
 		return
 	}
 
-	data["list"] = questionList
-	data["total"] = models.GetQuestionTotal(params)
+	data["list"] = examList
+	data["total"] = models.GetExamTotal(params)
 
 	appG.ResponseSuccess("ok", data)
 }
 
-func AddQuestion(c *gin.Context) {
+func AddExam(c *gin.Context) {
 	appG := app.Gin{C: c}
 	params := make(map[string]interface{})
 
-	questionType, _ := com.StrTo(c.PostForm("questionType")).Int()
-	title := c.PostForm("title")
-	remark := c.PostForm("remark")
-	option := c.PostForm("option")
+	name := c.PostForm("name")
+	time, _ := com.StrTo(c.PostForm("time")).Int()
+	questionList := c.PostForm("questionList")
 
-	if questionType == 0 || title == "" {
+	if name == "" || time == 0 || questionList == "" {
 		appG.ResponseErrMsg("参数不能为空")
 		return
 	}
 	userId := c.GetInt("userId")
 
 	params["userId"] = userId
-	params["questionType"] = questionType
-	params["title"] = title
-	params["remark"] = remark
-	params["option"] = option
+	params["name"] = name
+	params["time"] = time
+	params["questionList"] = questionList
 
-	err := models.AddQuestion(params)
+	err := models.AddExam(params)
 	if err != nil {
 		appG.ResponseErrMsg("新增失败")
 		return
@@ -62,20 +60,20 @@ func AddQuestion(c *gin.Context) {
 	appG.ResponseSuccess("ok", nil)
 }
 
-func EditQuestion(c *gin.Context) {
+func EditExam(c *gin.Context) {
 	appG := app.Gin{C: c}
 
-	questionId := com.StrTo(c.PostForm("questionId")).MustInt()
-	title := c.PostForm("title")
-	remark := c.PostForm("remark")
-	option := c.PostForm("option")
+	examId := com.StrTo(c.PostForm("examId")).MustInt()
+	name := c.PostForm("name")
+	time, _ := com.StrTo(c.PostForm("time")).Int()
+	questionList := c.PostForm("questionList")
 
 	data := make(map[string]interface{})
-	data["Title"] = title
-	data["Remark"] = remark
-	data["Option"] = option
+	data["Name"] = name
+	data["Time"] = time
+	data["QuestionList"] = questionList
 
-	err := models.EditQuestion(questionId, data)
+	err := models.EditExam(examId, data)
 	if err != nil {
 		appG.ResponseErrMsg("修改失败")
 		return
@@ -83,19 +81,19 @@ func EditQuestion(c *gin.Context) {
 	appG.ResponseSuccess("ok", nil)
 }
 
-func DeleteQuestion(c *gin.Context) {
+func DeleteExam(c *gin.Context) {
 	appG := app.Gin{C: c}
-	questionId := com.StrTo(c.PostForm("questionId")).MustInt()
+	examId := com.StrTo(c.PostForm("examId")).MustInt()
 
 	userId := c.GetInt("userId")
-	question, _ := models.GetQuestionDetail(questionId)
+	exam, _ := models.GetExamDetail(examId)
 
-	if question.UserId != userId {
+	if exam.UserId != userId {
 		appG.ResponseErrMsg("不能删除")
 		return
 	}
 
-	err := models.DeleteQuestion(questionId)
+	err := models.DeleteExam(examId)
 	if err != nil {
 		appG.ResponseErrMsg("删除失败")
 		return

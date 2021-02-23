@@ -48,7 +48,7 @@ func GetQuestionDetail(questionId int) (*Question, error) {
 	return &question, nil
 }
 
-func AddQuestion(params map[string]interface{}) (int, error) {
+func AddQuestion(params map[string]interface{}) error {
 	question := Question{
 		UserId:       params["userId"].(int),
 		QuestionType: params["questionType"].(int),
@@ -59,9 +59,9 @@ func AddQuestion(params map[string]interface{}) (int, error) {
 		UpdateTime:   time.Now(),
 	}
 	if err := db.Create(&question).Error; err != nil {
-		return 0, err
+		return err
 	}
-	return question.QuestionId, nil
+	return nil
 }
 
 func EditQuestion(questionId int, data interface{}) error {
