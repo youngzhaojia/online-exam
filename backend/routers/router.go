@@ -20,14 +20,14 @@ func InitRouter() *gin.Engine {
 	apiGroup.POST("/user/register", api.Register)
 	// jwt验证
 	apiGroup.Use(jwt.JWT())
-	// 分组
-	// {
-	// 	apiGroup.GET("/group/list", api.GetGroupList)
-	// 	apiGroup.POST("/group/add", api.AddGroup)
-	// 	apiGroup.POST("/group/update", api.EditGroup)
-	// 	apiGroup.POST("/group/delete", api.DeleteGroup)
-	// }
-	// 单词
+	// 问题
+	{
+		apiGroup.POST("/question/list", api.GetQuestionList)
+		apiGroup.POST("/question/add", api.AddQuestion)
+		apiGroup.POST("/question/edit", api.EditQuestion)
+		apiGroup.POST("/question/delete", api.DeleteQuestion)
+	}
+	// 试卷
 	// {
 	// 	apiGroup.GET("/word/list", api.GetWordList)
 	// 	apiGroup.POST("/word/add", api.AddWord)
