@@ -8,14 +8,14 @@
              label-width="80px">
 
       <div class="title-container">
-        <h3 class="title">Login Form</h3>
+        <h3 class="title">登录</h3>
       </div>
 
       <el-form-item prop="mobile"
-                    label="手机号">
+                    label="手机号:">
         <el-input ref="mobile"
                   v-model="loginForm.mobile"
-                  placeholder="mobile"
+                  placeholder="请输入手机号"
                   name="mobile"
                   type="text"
                   tabindex="1"
@@ -23,11 +23,12 @@
       </el-form-item>
 
       <el-form-item prop="password"
-                    label="密码">
+                    label="密码:">
         <el-input ref="password"
                   v-model="loginForm.password"
-                  placeholder="密码"
+                  placeholder="请输入密码"
                   name="password"
+                  type="password"
                   tabindex="2"
                   auto-complete="on"
                   @keyup.enter="handleLogin" />
@@ -35,55 +36,53 @@
 
       <el-form-item>
         <el-button :loading="loading"
-                 type="primary"
-                 style="width:100%;"
-                 @click.prevent="handleLogin">Login</el-button>
+                   type="primary"
+                   style="width:45%;"
+                   @click.prevent="handleLogin">登录</el-button>
+
+        <el-button type="default"
+                   style="width:45%;float:right;"
+                   @click.prevent="$router.push('/user/register')">没有账号，去注册</el-button>
+
       </el-form-item>
     </el-form>
   </div>
 </template>
 
 <script>
+import { login } from "@/api/user";
+import { setToken } from "@/utils/auth";
+import { ElMessage } from "element-plus";
+
 export default {
   name: "Login",
   data() {
     return {
-      loginForm: {
-        mobile: "13100000002",
-        password: "123456",
-      },
       loading: false,
-      passwordType: "password",
-      redirect: undefined,
-    };
-  },
-  watch: {
-    $route: {
-      handler: function (route) {
-        this.redirect = route.query && route.query.redirect;
+      loginForm: {
+        mobile: "",
+        password: "",
       },
-      immediate: true,
-    },
+    };
   },
   methods: {
     handleLogin() {
-      this.$refs.loginForm.validate((valid) => {
-        if (valid) {
-          this.loading = true;
-          this.$store
-            .dispatch("user/login", this.loginForm)
-            .then(() => {
-              this.$router.push({ path: this.redirect || "/" });
-              this.loading = false;
-            })
-            .catch(() => {
-              this.loading = false;
-            });
-        } else {
-          console.log("error submit!!");
-          return false;
-        }
-      });
+      this.loading = true;
+      login(this.loginForm)
+        .then((resp) => {
+          const { ret, msg, data } = resp;
+          console.log(ret);
+          if (ret) {
+            ElMessage.error(msg);
+            return;
+          }
+          ElMessage.success("登录成功");
+          setToken(data.token);
+          this.$router.push({ path: "/" });
+        })
+        .finally(() => {
+          this.loading = false;
+        });
     },
   },
 };
