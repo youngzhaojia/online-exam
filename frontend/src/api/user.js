@@ -15,3 +15,11 @@ export function register(data) {
     data,
   });
 }
+
+export function fetchUserInfo(data) {
+  return request({
+    url: "/user/info",
+    method: "post",
+    data,
+  });
+}
