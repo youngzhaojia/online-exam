@@ -76,3 +76,15 @@ func Register(c *gin.Context) {
 	}
 	appG.ResponseSuccess("ok", nil)
 }
+
+func GetUserInfo(c *gin.Context) {
+	appG := app.Gin{C: c}
+	userId := c.GetInt("userId")
+	user := models.GetUserById(userId)
+	data := make(map[string]interface{})
+
+	data["mobile"] = user.Mobile
+	data["name"] = user.Name
+	data["userId"] = user.UserId
+	appG.ResponseSuccess("ok", user)
+}

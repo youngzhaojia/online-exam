@@ -3,10 +3,10 @@ package models
 import "github.com/jinzhu/gorm"
 
 type User struct {
-	UserId   int `gorm:"primaryKey;autoIncrement"`
-	Mobile   string
-	Name     string
-	Password string
+	UserId   int    `gorm:"primaryKey;autoIncrement" json:"userId"`
+	Mobile   string `json:"mobile"`
+	Name     string `json:"name"`
+	Password string `json:"password"`
 }
 
 func CheckAuth(mobile string, password string) bool {
@@ -24,6 +24,13 @@ func GetUser(mobile string, password string) User {
 	user := User{}
 
 	db.Where(User{Mobile: mobile, Password: password}).First(&user)
+	return user
+}
+
+func GetUserById(userId int) User {
+	user := User{}
+
+	db.Where(User{UserId: userId}).First(&user)
 	return user
 }
 

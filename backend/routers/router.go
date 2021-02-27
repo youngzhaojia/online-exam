@@ -20,6 +20,10 @@ func InitRouter() *gin.Engine {
 	apiGroup.POST("/user/register", api.Register)
 	// jwt验证
 	apiGroup.Use(jwt.JWT())
+	// 用户
+	{
+		apiGroup.POST("/user/info", api.GetUserInfo)
+	}
 	// 问题
 	{
 		apiGroup.POST("/question/list", api.GetQuestionList)
