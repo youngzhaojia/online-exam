@@ -24,9 +24,17 @@ export function addQuestion(data) {
   });
 }
 
-export function updateQuestion(data) {
+export function editQuestion(data) {
   return request({
-    url: "/question/update",
+    url: "/question/edit",
+    method: "post",
+    data,
+  });
+}
+
+export function deleteQuestion(data) {
+  return request({
+    url: "/question/delete",
     method: "post",
     data,
   });

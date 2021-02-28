@@ -16,10 +16,9 @@ export function register(data) {
   });
 }
 
-export function fetchUserInfo(data) {
+export function fetchUserInfo() {
   return request({
     url: "/user/info",
     method: "post",
-    data,
   });
 }

@@ -52,7 +52,6 @@
 <script>
 import { login } from "@/api/user";
 import { setToken } from "@/utils/auth";
-import { ElMessage } from "element-plus";
 
 export default {
   name: "Login",
@@ -73,10 +72,10 @@ export default {
           const { ret, msg, data } = resp;
           console.log(ret);
           if (ret) {
-            ElMessage.error(msg);
+            this.$message.error(msg);
             return;
           }
-          ElMessage.success("登录成功");
+          this.$message.success("登录成功");
           setToken(data.token);
           this.$router.push({ path: "/" });
         })

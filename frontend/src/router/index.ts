@@ -1,33 +1,39 @@
 import { createRouter, createWebHistory, RouteRecordRaw } from "vue-router";
-import Layout from "@/layout/index.vue"
+import Layout from "@/layout/index.vue";
 
 const routes: Array<RouteRecordRaw> = [
   {
-    path: '/user/login',
+    path: "/user/login",
     component: import("@/views/user/login.vue"),
   },
   {
-    path: '/user/register',
+    path: "/user/register",
     component: import("@/views/user/register.vue"),
   },
   {
-    path: '/',
+    path: "/",
     component: Layout,
-    redirect: 'index',
+    redirect: "index",
     children: [
       {
-        path: 'index',
-        component: () => import('@/views/index.vue'),
-      },{
-      path: 'question/list',
-      component: () => import('@/views/question/list.vue'),
-    }]
+        path: "index",
+        component: () => import("@/views/index.vue"),
+      },
+      {
+        path: "question/list",
+        component: () => import("@/views/question/list.vue"),
+      },
+      {
+        path: "question/edit",
+        component: () => import("@/views/question/edit.vue"),
+      },
+    ],
   },
 ];
 
 const router = createRouter({
   history: createWebHistory(process.env.BASE_URL),
-  routes
+  routes,
 });
 
 export default router;

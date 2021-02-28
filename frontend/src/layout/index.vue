@@ -2,7 +2,7 @@
   <div class="app-container">
     <div class="app-menu">
       <div class="user-info">
-        132****0000
+        {{ userInfo.mobile }}
       </div>
       <el-menu :uniqueOpened="true"
                :default-active="defaultActive"
@@ -28,6 +28,8 @@
 </template>
 
 <script>
+import { fetchUserInfo } from "@/api/user";
+
 export default {
   name: "Layout",
   components: {},
@@ -35,7 +37,7 @@ export default {
   computed: {
     defaultActive() {
       return this.menuList
-        .findIndex((item) => item.url === this.$route.path)
+        .findIndex((item) => this.$route.path.includes(item.key))
         .toString();
     },
   },
@@ -43,21 +45,25 @@ export default {
     return {
       menuList: [
         {
+          key: "index",
           url: "/index",
           icon: "el-icon-s-home",
           name: "首页",
         },
         {
+          key: "question",
           url: "/question/list",
           icon: "el-icon-s-operation",
           name: "题目管理",
         },
         {
+          key: "exam",
           url: "/exam/list",
           icon: "el-icon-s-order",
           name: "试卷管理",
         },
         {
+          key: "answer",
           url: "/answer/list",
           icon: "el-icon-s-ticket",
           name: "答题管理",
@@ -68,14 +74,26 @@ export default {
           name: "退出",
         },
       ],
+      userInfo: {},
     };
   },
   watch: {},
-  created() {},
+  created() {
+    this.getUserInfo();
+  },
   mounted() {},
   methods: {
     handleSelect(index) {
       this.$router.push(this.menuList[index].url);
+    },
+    getUserInfo() {
+      fetchUserInfo().then((resp) => {
+        const { ret, data } = resp;
+        if (ret) {
+          return;
+        }
+        this.userInfo = data;
+      });
     },
   },
 };
@@ -84,7 +102,7 @@ export default {
 <style lang="scss" scoped>
 .app-container {
   min-height: 100vh;
-  width: 100vh;
+  width: 100%;
   .app-menu {
     float: left;
     width: 150px;
