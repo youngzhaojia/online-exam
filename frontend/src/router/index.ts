@@ -27,6 +27,14 @@ const routes: Array<RouteRecordRaw> = [
         path: "question/edit",
         component: () => import("@/views/question/edit.vue"),
       },
+      {
+        path: "exam/list",
+        component: () => import("@/views/exam/list.vue"),
+      },
+      {
+        path: "exam/edit",
+        component: () => import("@/views/exam/edit.vue"),
+      },
     ],
   },
 ];

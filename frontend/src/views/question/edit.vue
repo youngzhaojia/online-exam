@@ -8,7 +8,7 @@
     <div class="quesion-edit"
          v-loading="loading">
       <el-row>
-        <el-col :span="16">
+        <el-col :span="20">
           <el-form ref="form"
                    :model="formData"
                    :rules="rules"

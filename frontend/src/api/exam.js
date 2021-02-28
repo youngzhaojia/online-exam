@@ -24,9 +24,17 @@ export function addExam(data) {
   });
 }
 
-export function updateExam(data) {
+export function editExam(data) {
   return request({
-    url: "/exam/update",
+    url: "/exam/edit",
+    method: "post",
+    data,
+  });
+}
+
+export function deleteExam(data) {
+  return request({
+    url: "/exam/delete",
     method: "post",
     data,
   });
