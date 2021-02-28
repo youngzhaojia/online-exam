@@ -21,7 +21,7 @@ func GetAnswerList(pageNum int, pageSize int, params interface{}) ([]Answer, err
 	)
 
 	if pageNum >= 0 && pageSize > 0 {
-		err = db.Where(params).Limit(pageSize).Offset(pageNum).Find(&answers).Error
+		err = db.Where(params).Limit(pageSize).Offset(pageNum).Order("Create_time desc").Find(&answers).Error
 	} else {
 		err = db.Where(params).Find(&answers).Error
 	}

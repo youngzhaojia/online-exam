@@ -23,7 +23,7 @@ func GetExamList(pageNum int, pageSize int, params interface{}) ([]Exam, error) 
 	)
 
 	if pageNum >= 0 && pageSize > 0 {
-		err = db.Where(params).Limit(pageSize).Offset(pageNum).Find(&exams).Error
+		err = db.Where(params).Limit(pageSize).Offset(pageNum).Order("Create_time desc").Find(&exams).Error
 	} else {
 		err = db.Where(params).Find(&exams).Error
 	}
