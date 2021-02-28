@@ -27,6 +27,7 @@ func InitRouter() *gin.Engine {
 	// 问题
 	{
 		apiGroup.POST("/question/list", api.GetQuestionList)
+		apiGroup.POST("/question/detail", api.GetQuestionDetail)
 		apiGroup.POST("/question/add", api.AddQuestion)
 		apiGroup.POST("/question/edit", api.EditQuestion)
 		apiGroup.POST("/question/delete", api.DeleteQuestion)

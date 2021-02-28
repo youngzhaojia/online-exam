@@ -12,6 +12,9 @@ import (
 
 func GetQuestionList(c *gin.Context) {
 	appG := app.Gin{C: c}
+
+	questionType := c.DefaultPostForm("questionType", "")
+
 	params := make(map[string]interface{})
 	data := make(map[string]interface{})
 
@@ -19,6 +22,10 @@ func GetQuestionList(c *gin.Context) {
 	pageNum := util.GetPage(c)
 	userId := c.GetInt("userId")
 	params["user_id"] = userId
+
+	if questionType != "" {
+		params["question_type"] = questionType
+	}
 
 	// 分组列表数据
 	questionList, err := models.GetQuestionList(pageNum, setting.AppSetting.PageSize, params)
@@ -31,6 +38,26 @@ func GetQuestionList(c *gin.Context) {
 	data["total"] = models.GetQuestionTotal(params)
 
 	appG.ResponseSuccess("ok", data)
+}
+
+func GetQuestionDetail(c *gin.Context) {
+	appG := app.Gin{C: c}
+	questionId := com.StrTo(c.PostForm("questionId")).MustInt()
+
+	// 参数
+	userId := c.GetInt("userId")
+
+	// 分组列表数据
+	questionDetail, err := models.GetQuestionDetail(questionId)
+	if err != nil {
+		appG.ResponseErrMsg("数据查询出错")
+		return
+	}
+	if userId != questionDetail.UserId {
+		appG.ResponseErrMsg("参数有误")
+		return
+	}
+	appG.ResponseSuccess("ok", questionDetail)
 }
 
 func AddQuestion(c *gin.Context) {
