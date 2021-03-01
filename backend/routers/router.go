@@ -43,6 +43,7 @@ func InitRouter() *gin.Engine {
 	// 答题
 	{
 		apiGroup.POST("/answer/list", api.GetAnswerList)
+		apiGroup.POST("/answer/detail", api.GetAnswerDetail)
 		apiGroup.POST("/answer/add", api.AddAnswer)
 		apiGroup.POST("/answer/edit", api.EditAnswer)
 		apiGroup.POST("/answer/delete", api.DeleteAnswer)

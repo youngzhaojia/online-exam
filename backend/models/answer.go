@@ -17,14 +17,15 @@ type Answer struct {
 }
 
 type AnswerInfo struct {
-	AnswerId   int    `json:"answerId"`
-	UserId     int    `json:"userId"`
-	UserName   string `json:"userName"`
-	ExamId     int    `json:"examId"`
-	ExamName   string `json:"examName"`
-	TeacherId  int    `json:"teacherId"`
-	AnswerList string `json:"answerList"`
-	CreateTime int64  `json:"createTime"`
+	AnswerId     int    `json:"answerId"`
+	UserId       int    `json:"userId"`
+	UserName     string `json:"userName"`
+	ExamId       int    `json:"examId"`
+	ExamName     string `json:"examName"`
+	QuestionList string `json:"quesionList"`
+	TeacherId    int    `json:"teacherId"`
+	AnswerList   string `json:"answerList"`
+	CreateTime   int64  `json:"createTime"`
 }
 
 func GetAnswerList(pageNum int, pageSize int, params interface{}) ([]AnswerInfo, error) {
@@ -47,13 +48,14 @@ func GetAnswerTotal(params interface{}) (count int) {
 	return
 }
 
-func GetAnswerDetail(answerId int) (*Answer, error) {
-	var answer Answer
-	err := db.Where("answer_id = ?", answerId).First(&answer).Error
+func GetAnswerDetail(answerId int) (*AnswerInfo, error) {
+	var answerInfo AnswerInfo
+
+	err := db.Table("t_answer").Select("t_answer.*, t_user.name as user_name, t_exam.name as exam_name, t_exam.question_list").Joins("left join t_user on t_answer.user_id = t_user.user_id").Joins("left join t_exam on t_answer.exam_id = t_exam.exam_id").Where("answer_id = ?", answerId).First(&answerInfo).Error
 	if err != nil && err != gorm.ErrRecordNotFound {
 		return nil, err
 	}
-	return &answer, nil
+	return &answerInfo, nil
 }
 
 func AddAnswer(params map[string]interface{}) error {

@@ -37,6 +37,37 @@ func GetAnswerList(c *gin.Context) {
 	appG.ResponseSuccess("ok", data)
 }
 
+func GetAnswerDetail(c *gin.Context) {
+	appG := app.Gin{C: c}
+	answerId := com.StrTo(c.PostForm("answerId")).MustInt()
+
+	// 参数
+	userId := c.GetInt("userId")
+
+	// 分组列表数据
+	answerDetail, err := models.GetAnswerDetail(answerId)
+	if err != nil {
+		appG.ResponseErrMsg("试卷数据查询出错")
+		return
+	}
+	if userId != answerDetail.TeacherId {
+		appG.ResponseErrMsg("参数有误")
+		return
+	}
+
+	questionList, err := models.GetQuestionListByIds(answerDetail.QuestionList)
+	if err != nil {
+		appG.ResponseErrMsg("试题数据查询出错")
+		return
+	}
+
+	data := make(map[string]interface{})
+	data["answer"] = answerDetail
+	data["questionList"] = questionList
+
+	appG.ResponseSuccess("ok", data)
+}
+
 func AddAnswer(c *gin.Context) {
 	appG := app.Gin{C: c}
 	params := make(map[string]interface{})
