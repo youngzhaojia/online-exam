@@ -1,9 +1,11 @@
 package models
 
 import (
+	"strings"
 	"time"
 
 	"github.com/jinzhu/gorm"
+	"github.com/unknwon/com"
 )
 
 type Question struct {
@@ -28,6 +30,26 @@ func GetQuestionList(pageNum int, pageSize int, params interface{}) ([]Question,
 	} else {
 		err = db.Where(params).Find(&questions).Error
 	}
+	if err != nil {
+		return nil, err
+	}
+	return questions, err
+}
+
+// id 逗号隔开
+func GetQuestionListByIds(ids string) ([]Question, error) {
+	var (
+		questions []Question
+		err       error
+	)
+	idsStrArr := strings.Split(ids, ",")
+	length := len(idsStrArr)
+	idsIntArr := make([]int, length)
+	for key, value := range idsStrArr {
+		idsIntArr[key] = com.StrTo(value).MustInt()
+	}
+
+	err = db.Where("question_id IN (?)", idsIntArr).Order("Create_time desc").Find(&questions).Error
 	if err != nil {
 		return nil, err
 	}

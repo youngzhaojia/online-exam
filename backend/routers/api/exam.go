@@ -43,14 +43,25 @@ func GetExamDetail(c *gin.Context) {
 	// 分组列表数据
 	examDetail, err := models.GetExamDetail(examId)
 	if err != nil {
-		appG.ResponseErrMsg("数据查询出错")
+		appG.ResponseErrMsg("试卷数据查询出错")
 		return
 	}
 	if userId != examDetail.UserId {
 		appG.ResponseErrMsg("参数有误")
 		return
 	}
-	appG.ResponseSuccess("ok", examDetail)
+
+	questionList, err := models.GetQuestionListByIds(examDetail.QuestionList)
+	if err != nil {
+		appG.ResponseErrMsg("试题数据查询出错")
+		return
+	}
+
+	data := make(map[string]interface{})
+	data["exam"] = examDetail
+	data["questionList"] = questionList
+
+	appG.ResponseSuccess("ok", data)
 }
 
 func AddExam(c *gin.Context) {
