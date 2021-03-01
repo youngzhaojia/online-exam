@@ -155,8 +155,8 @@ export default {
             this.$message.error(msg);
             return;
           }
-          this.formData = Object.assign({}, data);
-          this.formData.questionList = JSON.parse(this.formData.questionList);
+          this.formData = Object.assign(data.exam);
+          this.formData.questionList = data.questionList;
         })
         .finally(() => {
           this.loading = false;
@@ -187,7 +187,7 @@ export default {
           params.questionList = params.questionList.map(
             (item) => item.questionId
           );
-          params.questionList = JSON.stringify([...params.questionList]);
+          params.questionList = [...params.questionList].join(",");
           actionApi(params)
             .then((resp) => {
               const { ret, msg } = resp;
