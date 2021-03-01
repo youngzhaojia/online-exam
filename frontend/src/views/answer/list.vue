@@ -52,7 +52,7 @@
           <template #default="scope">
             <el-button type="success"
                        size="mini"
-                       @click="handleEdit(scope.row)">详情</el-button>
+                       @click="handleDetail(scope.row)">详情</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -132,7 +132,7 @@ export default {
       });
     },
     // 详情
-    handleDetail() {
+    handleDetail(item) {
       this.$router.push({
         path: "/answer/detail",
         query: {
