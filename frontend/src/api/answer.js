@@ -7,3 +7,11 @@ export function fetchAnswerList(data) {
     data,
   });
 }
+
+export function fetchAnswerDetail(data) {
+  return request({
+    url: "/answer/detail",
+    method: "post",
+    data,
+  });
+}

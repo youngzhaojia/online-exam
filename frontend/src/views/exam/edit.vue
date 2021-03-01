@@ -164,7 +164,9 @@ export default {
     },
     getQuestionList() {
       this.listLoading = true;
-      return fetchQuestionList(this.formSearch)
+      return fetchQuestionList({
+        pageSize: 10000,
+      })
         .then((resp) => {
           const { ret, msg, data } = resp;
           if (ret) {
