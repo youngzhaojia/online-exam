@@ -17,11 +17,15 @@ func GetExamList(c *gin.Context) {
 
 	// 参数
 	pageNum := util.GetPage(c)
+	pageSize, _ := com.StrTo(c.DefaultPostForm("pageSize", "0")).Int()
+	if pageSize == 0 {
+		pageSize = setting.AppSetting.PageSize
+	}
 	userId := c.GetInt("userId")
 	params["user_id"] = userId
 
 	// 分组列表数据
-	examList, err := models.GetExamList(pageNum, setting.AppSetting.PageSize, params)
+	examList, err := models.GetExamList(pageNum, pageSize, params)
 	if err != nil {
 		appG.ResponseErrMsg("数据查询出错")
 		return

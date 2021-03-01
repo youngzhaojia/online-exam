@@ -9,26 +9,37 @@ import (
 type Answer struct {
 	AnswerId   int       `gorm:"primaryKey;autoIncrement" json:"answerId"`
 	UserId     int       `json:"userId"`
+	ExamId     int       `json:"examId"`
+	TeacherId  int       `json:"teacherId"`
 	AnswerList string    `json:"answerList"`
 	CreateTime int64     `json:"createTime"`
 	UpdateTime time.Time `json:"updateTime"`
 }
 
-func GetAnswerList(pageNum int, pageSize int, params interface{}) ([]Answer, error) {
+type AnswerInfo struct {
+	AnswerId   int    `json:"answerId"`
+	UserId     int    `json:"userId"`
+	UserName   string `json:"userName"`
+	ExamId     int    `json:"examId"`
+	ExamName   string `json:"examName"`
+	TeacherId  int    `json:"teacherId"`
+	AnswerList string `json:"answerList"`
+	CreateTime int64  `json:"createTime"`
+}
+
+func GetAnswerList(pageNum int, pageSize int, params interface{}) ([]AnswerInfo, error) {
 	var (
-		answers []Answer
-		err     error
+		answerInfos []AnswerInfo
+		err         error
 	)
 
 	if pageNum >= 0 && pageSize > 0 {
-		err = db.Where(params).Limit(pageSize).Offset(pageNum).Order("Create_time desc").Find(&answers).Error
-	} else {
-		err = db.Where(params).Find(&answers).Error
+		err = db.Table("t_answer").Select("t_answer.*, t_user.name as user_name, t_exam.name as exam_name").Joins("left join t_user on t_answer.user_id = t_user.user_id").Joins("left join t_exam on t_answer.exam_id = t_exam.exam_id").Where(params).Limit(pageSize).Offset(pageNum).Order("Create_time desc").Find(&answerInfos).Error
 	}
 	if err != nil {
 		return nil, err
 	}
-	return answers, err
+	return answerInfos, err
 }
 
 func GetAnswerTotal(params interface{}) (count int) {

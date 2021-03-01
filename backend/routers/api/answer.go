@@ -17,8 +17,12 @@ func GetAnswerList(c *gin.Context) {
 
 	// 参数
 	pageNum := util.GetPage(c)
+	examId := c.DefaultPostForm("examId", "")
 	userId := c.GetInt("userId")
-	params["user_id"] = userId
+	params["teacher_id"] = userId
+	if examId != "" {
+		params["exam_id"] = examId
+	}
 
 	// 分组列表数据
 	answerList, err := models.GetAnswerList(pageNum, setting.AppSetting.PageSize, params)
