@@ -2,7 +2,7 @@
   <div class="app-container">
     <div class="app-menu">
       <div class="user-info">
-        {{ userInfo.mobile }}
+        {{ userInfo.name }}
       </div>
       <el-menu :uniqueOpened="true"
                :default-active="defaultActive"

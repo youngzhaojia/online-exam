@@ -77,7 +77,7 @@ export default {
           }
           this.$message.success("登录成功");
           setToken(data.token);
-          this.$router.push({ path: "/" });
+          this.$router.push({ path: "/index" });
         })
         .finally(() => {
           this.loading = false;

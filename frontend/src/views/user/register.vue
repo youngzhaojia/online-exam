@@ -11,6 +11,17 @@
         <h3 class="title">注册</h3>
       </div>
 
+      <el-form-item prop="name"
+                    label="姓名:">
+        <el-input ref="name"
+                  v-model="registerForm.name"
+                  placeholder="请输入姓名"
+                  name="name"
+                  type="text"
+                  tabindex="1"
+                  auto-complete="on" />
+      </el-form-item>
+
       <el-form-item prop="mobile"
                     label="手机号:">
         <el-input ref="mobile"
@@ -70,6 +81,7 @@ export default {
     return {
       loading: false,
       registerForm: {
+        name: "",
         mobile: "",
         password: "",
         password2: "",
@@ -78,6 +90,14 @@ export default {
   },
   methods: {
     handleRegister() {
+      if (
+        !this.registerForm.name ||
+        !this.registerForm.mobile ||
+        !this.registerForm.password
+      ) {
+        ElMessage.error("信息不能为空");
+        return;
+      }
       if (this.registerForm.password !== this.registerForm.password2) {
         ElMessage.error("两次输入的密码不一致");
         return;

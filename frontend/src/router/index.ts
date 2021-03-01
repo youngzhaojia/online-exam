@@ -1,4 +1,5 @@
 import { createRouter, createWebHistory, RouteRecordRaw } from "vue-router";
+import { getToken, removeToken } from "@/utils/auth";
 import Layout from "@/layout/index.vue";
 
 const routes: Array<RouteRecordRaw> = [
@@ -50,6 +51,28 @@ const routes: Array<RouteRecordRaw> = [
 const router = createRouter({
   history: createWebHistory(process.env.BASE_URL),
   routes,
+});
+
+// 鉴权
+const whiteList = ["/user/login", "/user/register"]; // no redirect whitelist
+
+router.beforeEach(async (to, from, next) => {
+  const hasToken = getToken();
+  if (!hasToken) {
+    if (whiteList.indexOf(to.path) !== -1) {
+      next();
+    } else {
+      next("/user/login");
+    }
+  } else {
+    // 退出
+    if (to.path === "/logout") {
+      removeToken();
+      next("/user/login");
+    } else {
+      next();
+    }
+  }
 });
 
 export default router;
