@@ -16,7 +16,7 @@
           <template v-if="item.questionType === questionConfig.TYPE_CHOOSE">
             <van-field name="radio">
               <template #input>
-                <van-radio-group v-model="answerList[index]"
+                <van-radio-group v-model="answerList[item.questionId]"
                                  direction="horizontal">
                   <van-radio :name="chooseIndex + 1"
                              v-for="(chooseItem,chooseIndex) in JSON.parse(item.option)"
@@ -26,7 +26,7 @@
             </van-field>
           </template>
           <template v-else>
-            <van-field v-model="answerList[index]"
+            <van-field v-model="answerList[item.questionId]"
                        rows="2"
                        autosize
                        type="textarea"
@@ -92,9 +92,9 @@ export default {
           this.questionList = data.questionList;
 
           // 答案
-          for (let i; i < this.questionList.length; i++) {
-            this.answerList[i] = "";
-          }
+          this.questionList.forEach((item) => {
+            this.answerList[item.questionId] = "";
+          });
         })
         .finally(() => {
           this.loading = false;
