@@ -41,17 +41,10 @@ func GetExamDetail(c *gin.Context) {
 	appG := app.Gin{C: c}
 	examId := com.StrTo(c.PostForm("examId")).MustInt()
 
-	// 参数
-	userId := c.GetInt("userId")
-
 	// 分组列表数据
 	examDetail, err := models.GetExamDetail(examId)
 	if err != nil {
 		appG.ResponseErrMsg("试卷数据查询出错")
-		return
-	}
-	if userId != examDetail.UserId {
-		appG.ResponseErrMsg("参数有误")
 		return
 	}
 

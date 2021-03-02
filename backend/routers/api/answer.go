@@ -70,59 +70,25 @@ func GetAnswerDetail(c *gin.Context) {
 
 func AddAnswer(c *gin.Context) {
 	appG := app.Gin{C: c}
-	params := make(map[string]interface{})
 
-	answerList := c.PostForm("answerList")
+	examId, _ := com.StrTo(c.DefaultPostForm("examId", "0")).Int()
+	teacherId, _ := com.StrTo(c.DefaultPostForm("teacherId", "0")).Int()
+	studentName := c.DefaultPostForm("studentName", "")
+	answerList := c.DefaultPostForm("answerList", "")
 
-	if answerList == "" {
+	if examId <= 0 || teacherId <= 0 || answerList == "" || studentName == "" {
 		appG.ResponseErrMsg("参数不能为空")
 		return
 	}
-	userId := c.GetInt("userId")
-
-	params["userId"] = userId
+	params := make(map[string]interface{})
+	params["examId"] = examId
+	params["teacherId"] = teacherId
+	params["studentName"] = studentName
 	params["answerList"] = answerList
 
 	err := models.AddAnswer(params)
 	if err != nil {
 		appG.ResponseErrMsg("新增失败")
-		return
-	}
-	appG.ResponseSuccess("ok", nil)
-}
-
-func EditAnswer(c *gin.Context) {
-	appG := app.Gin{C: c}
-
-	answerId := com.StrTo(c.PostForm("answerId")).MustInt()
-	answerList := c.PostForm("answerList")
-
-	data := make(map[string]interface{})
-	data["AnswerList"] = answerList
-
-	err := models.EditAnswer(answerId, data)
-	if err != nil {
-		appG.ResponseErrMsg("修改失败")
-		return
-	}
-	appG.ResponseSuccess("ok", nil)
-}
-
-func DeleteAnswer(c *gin.Context) {
-	appG := app.Gin{C: c}
-	answerId := com.StrTo(c.PostForm("answerId")).MustInt()
-
-	userId := c.GetInt("userId")
-	answer, _ := models.GetAnswerDetail(answerId)
-
-	if answer.UserId != userId {
-		appG.ResponseErrMsg("不能删除")
-		return
-	}
-
-	err := models.DeleteAnswer(answerId)
-	if err != nil {
-		appG.ResponseErrMsg("删除失败")
 		return
 	}
 	appG.ResponseSuccess("ok", nil)

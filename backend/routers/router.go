@@ -18,6 +18,10 @@ func InitRouter() *gin.Engine {
 	// 用户登录
 	apiGroup.POST("/user/login", api.Login)
 	apiGroup.POST("/user/register", api.Register)
+
+	// 考试详情
+	apiGroup.POST("/exam/detail", api.GetExamDetail)
+	apiGroup.POST("/answer/add", api.AddAnswer)
 	// jwt验证
 	apiGroup.Use(jwt.JWT())
 	// 用户
@@ -35,7 +39,6 @@ func InitRouter() *gin.Engine {
 	// 试卷
 	{
 		apiGroup.POST("/exam/list", api.GetExamList)
-		apiGroup.POST("/exam/detail", api.GetExamDetail)
 		apiGroup.POST("/exam/add", api.AddExam)
 		apiGroup.POST("/exam/edit", api.EditExam)
 		apiGroup.POST("/exam/delete", api.DeleteExam)
@@ -44,9 +47,6 @@ func InitRouter() *gin.Engine {
 	{
 		apiGroup.POST("/answer/list", api.GetAnswerList)
 		apiGroup.POST("/answer/detail", api.GetAnswerDetail)
-		apiGroup.POST("/answer/add", api.AddAnswer)
-		apiGroup.POST("/answer/edit", api.EditAnswer)
-		apiGroup.POST("/answer/delete", api.DeleteAnswer)
 	}
 	return r
 }

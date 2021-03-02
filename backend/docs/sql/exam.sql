@@ -49,9 +49,9 @@ CREATE TABLE `t_exam` (
 DROP TABLE IF EXISTS `t_answer`;
 CREATE TABLE `t_answer` (
   `answer_id` int(11) unsigned NOT NULL AUTO_INCREMENT COMMENT 'answer_id',
-  `user_id` int(11) unsigned NOT NULL DEFAULT '0' COMMENT '学生id',
   `exam_id` int(11) unsigned NOT NULL DEFAULT '0' COMMENT '试卷id',
   `teacher_id` int(11) unsigned NOT NULL DEFAULT '0' COMMENT '老师用户id',
+  `student_name` varchar(64) NOT NULL DEFAULT '' COMMENT '学生名称',
   `answer_list` text NOT NULL COMMENT '答案列表',
   `create_time` int(11) unsigned NOT NULL DEFAULT '0' COMMENT '创建时间',
   `update_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
