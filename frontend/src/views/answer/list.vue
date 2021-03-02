@@ -37,7 +37,7 @@
         </el-table-column>
 
         <el-table-column label="学生名"
-                         prop="userName">
+                         prop="studentName">
         </el-table-column>
 
         <el-table-column label="交卷时间"

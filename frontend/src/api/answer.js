@@ -15,3 +15,11 @@ export function fetchAnswerDetail(data) {
     data,
   });
 }
+
+export function addAnswer(data) {
+  return request({
+    url: "/answer/add",
+    method: "post",
+    data,
+  });
+}

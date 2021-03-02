@@ -12,6 +12,14 @@ const routes: Array<RouteRecordRaw> = [
     component: import("@/views/user/register.vue"),
   },
   {
+    path: "/mobile/answer",
+    component: import("@/views/mobile/answer.vue"),
+  },
+  {
+    path: "/mobile/success",
+    component: import("@/views/mobile/success.vue"),
+  },
+  {
     path: "/",
     component: Layout,
     redirect: "index",
@@ -54,7 +62,12 @@ const router = createRouter({
 });
 
 // 鉴权
-const whiteList = ["/user/login", "/user/register"]; // no redirect whitelist
+const whiteList = [
+  "/user/login",
+  "/user/register",
+  "/mobile/answer",
+  "/mobile/success",
+]; // no redirect whitelist
 
 router.beforeEach(async (to, from, next) => {
   const hasToken = getToken();

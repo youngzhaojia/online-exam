@@ -13,7 +13,7 @@
             <el-form ref="form"
                      label-width="120px">
               <el-form-item label="学生名:">
-                {{ answerDetail.userName }}
+                {{ answerDetail.studentName }}
               </el-form-item>
 
               <el-form-item label="试卷名:">
