@@ -3,7 +3,7 @@
     <el-card class="box-card">
       <template #header>
         <el-page-header @back="$router.back()"
-                        :content="答题详情">
+                        content="答题详情">
         </el-page-header>
       </template>
       <div class="answer-edit"
