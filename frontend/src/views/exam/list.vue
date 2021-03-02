@@ -33,6 +33,20 @@
           </template>
         </el-table-column>
 
+        <el-table-column prop="time"
+                         label="考试链接">
+          <template #default="scope">
+            <el-popover placement="top-start"
+                        trigger="hover">
+              <img :src="qrList[scope.$index]"
+                   alt="">
+              <template #reference>
+                <el-button size="mini">二维码</el-button>
+              </template>
+            </el-popover>
+          </template>
+        </el-table-column>
+
         <el-table-column label="操作"
                          width="150">
           <template #default="scope">
@@ -57,11 +71,11 @@
 </template>
 
 <script>
+import QRCode from "qrcode";
 import { fetchExamList, deleteExam } from "@/api/exam";
 
 export default {
   name: "examList",
-  components: {},
   props: {},
   computed: {},
   data() {
@@ -75,6 +89,7 @@ export default {
       },
       list: [],
       total: 0,
+      qrList: [],
     };
   },
   watch: {},
@@ -95,6 +110,7 @@ export default {
           }
           this.list = data.list;
           this.total = data.total;
+          this.createQr();
         })
         .finally(() => {
           this.listLoading = false;
@@ -103,6 +119,15 @@ export default {
     handleCurrentChange(val) {
       this.formSearch.page = val;
       this.getList();
+    },
+    // 二维码地址
+    createQr() {
+      this.list.forEach((item, key) => {
+        const path = `${location.protocol}//${location.hostname}:${location.port}/mobile/answer?examId=${item.examId}`;
+        QRCode.toDataURL(path).then((url) => {
+          this.qrList[key] = url;
+        });
+      });
     },
     // 新增
     handleAdd() {

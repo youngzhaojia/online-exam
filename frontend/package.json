@@ -12,6 +12,7 @@
     "core-js": "^3.6.5",
     "element-plus": "^1.0.2-beta.32",
     "js-cookie": "^2.2.1",
+    "qrcode": "^1.4.4",
     "register-service-worker": "^1.7.1",
     "vant": "^3.0.7",
     "vue": "^3.0.0",
