@@ -49,5 +49,5 @@ func init() {
 }
 
 func CloseDb() {
-	db.Close()
+	// db.Close()
 }
